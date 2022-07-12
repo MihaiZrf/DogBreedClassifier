@@ -83,4 +83,4 @@ model = keras.Sequential([
 
 model.compile(optimizer = "adam", loss = "categorical_crossentropy", metrics = ["accuracy"])
 
-model.fit(X_train, y_train, epochs = 10, validation_data = (X_train, y_train))
+model.fit(X_train, y_train, epochs = 10, validation_data = (X_valid, y_valid))
