@@ -4,5 +4,5 @@ A dog breed classifier written in python 3.10 using tensorflow. The model takes 
 
 Follow this steps if you want to train the model yourself:
   - Install required libraries with "pip install -r requirements.txt".
-  - Go to https://www.kaggle.com/competitions/dog-breed-identification/data and press "Download All" at the bottom of the page. After downloading the data, unzip the folder and rename it "Data".
+  - Go to https://www.kaggle.com/competitions/dog-breed-identification/data and press "Download All" at the bottom of the page. After downloading the data unzip the folder and rename it "Data".
   - Run classifier_model.py and wait for the results.
