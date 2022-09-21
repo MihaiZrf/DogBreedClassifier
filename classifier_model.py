@@ -1,4 +1,5 @@
 import os
+import sys
 import cv2
 
 import numpy as np
@@ -28,7 +29,14 @@ def convertData(X, y):
 
     return img, label
 
-PATH = "Data/"
+input_path = input("Enter where to look for \"Data\" folder: ")
+
+PATH = os.path.join(input_path, "Data")
+
+if os.path.isdir(PATH) == False:
+    print("Invalid path")
+    sys.exit(0)
+
 IMG_SIZE = 224
 IMG_SHAPE = (IMG_SIZE, IMG_SIZE, 3)
 
@@ -54,8 +62,8 @@ for id in glob(train_path):
     breed = breed_list[0]
     labels.append(breed_id[breed])
 
-train_X, valid_X = train_test_split(glob(train_path), train_size = 0.9, test_size = 0.1, random_state = 22)
-train_y, valid_y = train_test_split(labels, train_size = 0.9, test_size = 0.1, random_state = 22)
+train_X, valid_X = train_test_split(glob(train_path), train_size = 0.85, test_size = 0.15, random_state = 22)
+train_y, valid_y = train_test_split(labels, train_size = 0.85, test_size = 0.15, random_state = 22)
 
 for i in range(len(train_X)):
     train_X[i], train_y[i] = convertData(train_X[i], train_y[i])
@@ -64,10 +72,10 @@ for i in range(len(valid_X)):
     valid_X[i], valid_y[i] = convertData(valid_X[i], valid_y[i])
 
 X_train = np.array([x for x in train_X])
-y_train = np.array([x for x in train_y])
+y_train = np.array([y for y in train_y])
 
 X_valid = np.array([x for x in valid_X])
-y_valid = np.array([x for x in valid_y])
+y_valid = np.array([y for y in valid_y])
 
 base_model = keras.applications.MobileNetV2(input_shape = IMG_SHAPE, include_top = False, weights = 'imagenet')
 
@@ -84,3 +92,14 @@ model = keras.Sequential([
 model.compile(optimizer = "adam", loss = "categorical_crossentropy", metrics = ["accuracy"])
 
 model.fit(X_train, y_train, epochs = 10, validation_data = (X_valid, y_valid))
+
+save_location = input("Enter where to save the model: ")
+
+if os.path.isdir(save_location) == False:
+    print("Invalid path")
+    sys.exit(0)
+
+new = os.path.join(save_location, "Model")
+os.mkdir(new)
+
+model.save(new)
